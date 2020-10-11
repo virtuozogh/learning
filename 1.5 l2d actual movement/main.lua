@@ -23,6 +23,21 @@ love.keypressed = function(pressed_key)
     y2 = y2 - 10
     y3 = y3 - 10
     y4 = y4 - 10
+  elseif pressed_key == "a" then
+    x1 = x1 - 10
+    x2 = x2 - 10
+    x3 = x3 - 10
+    x4 = x4 - 10
+  elseif pressed_key == "d" then
+    x1 = x1 + 10
+    x2 = x2 + 10
+    x3 = x3 + 10
+    x4 = x4 + 10
+  elseif pressed_key == "s" then
+    y1 = y1 + 10
+    y2 = y2 + 10
+    y3 = y3 + 10
+    y4 = y4 + 10
   end
 end
 
