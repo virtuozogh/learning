@@ -8,11 +8,14 @@ end
 function love.update(dt)
   if love.keyboard.isDown("w") then
     circleY = circleY + addY
-  elseif love.keyboard.isDown("a") then
+  end
+  if love.keyboard.isDown("a") then
     circleX = circleX - addX
-  elseif love.keyboard.isDown("d") then
+  end
+  if love.keyboard.isDown("d") then
     circleX = circleX + addX
-  elseif love.keyboard.isDown("s") then
+  end
+  if love.keyboard.isDown("s") then
     circleY = circleY - addY
   end
 end
