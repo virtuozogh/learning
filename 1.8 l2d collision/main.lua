@@ -1,7 +1,4 @@
 function love.conf(c)
-  c.console = true
-  c.window.width = 800
-  c.window.height = 600
 end 
 
 function love.load() 
@@ -34,6 +31,21 @@ function collision(a, b)
   end
 end
 
+--State change
+function state()
+  math.randomseed(os.time())
+  random = math.random(0 , 9)
+  random2 = math.random(10 - random)
+  x_degree = random * 1
+  y_degree = random2 * 150
+end
+
+math.randomseed(os.time())
+  random = math.random(0 , 9)
+  random2 = math.random(10 - random)
+  x_degree = random * 1
+  y_degree = random2 * 1
+
 function love.update(dt)
     if love.keyboard.isDown("w") and paddle.paddleY ~= 0 then
       paddle.paddleY = paddle.paddleY - addY
@@ -41,8 +53,31 @@ function love.update(dt)
     if love.keyboard.isDown("s") and paddle.paddleY ~= 500 then
       paddle.paddleY = paddle.paddleY + addY
     end
+    if c.circleX >= 790 then
+      -- opp and adj
+      -- pointing into the hypotenuse
+      -- we convert the new hypotenuse into the opposite
+      x_degree = -math.sqrt(x_degree^2 + y_degree^2)
+      c.circleX = c.circleX + x_degree
+      c.circleY = c.circleY + y_degree
+    elseif c.circleX < 0 then
+      x_degree = math.sqrt(x_degree^2 + y_degree^2)
+      c.circleX = c.circleX + x_degree
+      c.circleY = c.circleY + y_degree
+    elseif c.circleY < 0 then
+      y_degree = math.sqrt(x_degree^2 + y_degree^2)
+      c.circleX = c.circleX + x_degree
+      c.circleY = c.circleY + y_degree
+    elseif c.circleY >= 590 then
+      y_degree = -math.sqrt(x_degree^2 + y_degree^2)
+      c.circleX = c.circleX + x_degree
+      c.circleY = c.circleY + y_degree
+    else 
+      c.circleX = c.circleX + x_degree
+      c.circleY = c.circleY + y_degree
+    end
     if not collision(paddle, c) then
-      c.circleX = c.circleX - 200 * dt
+      c.circleX = c.circleX + y_degree
     end
 end
 
