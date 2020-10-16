@@ -5,31 +5,48 @@ function love.conf(c)
 end 
 
 function love.load() 
-  paddleX = 100
-  paddleY = 250
+  paddle = {
+    paddleX = 100,
+    paddleY = 250,
+    width = 20,
+    height = 100
+  }
   addX = 10
   addY = 10
+  c = {
+    circleX = 800 / 2,
+    circleY = 600 / 2
+  } 
+end
+
+function collision(a, b)
+  local a_left = a.paddleX
+  local a_right = a.paddleX + a.width 
   
-  circleX = 800 / 2
-  circleY = 600 / 2
+  local b_left = b.circleX
+  local b_right = b.circleX + 10
+  
+  if a_right > b_left and
+  a_left < b_right then
+    return false
+  else
+    return true
+  end
 end
 
 function love.update(dt)
-    if love.keyboard.isDown("w") and paddleY ~= 0 then
-      paddleY = paddleY - addY
+    if love.keyboard.isDown("w") and paddle.paddleY ~= 0 then
+      paddle.paddleY = paddle.paddleY - addY
     end
-    if love.keyboard.isDown("s") and paddleY ~= 500 then
-      paddleY = paddleY + addY
+    if love.keyboard.isDown("s") and paddle.paddleY ~= 500 then
+      paddle.paddleY = paddle.paddleY + addY
     end
-    
-    if circleX ~= 790 then
-      circleX = circleX + 10
-    elseif circleX ~= 0 then
-      circleX = circleX - 10
+    if collision(paddle, c) then
+      c.circleX = c.circleX - 10
     end
 end
 
 function love.draw()
-  love.graphics.rectangle("fill", paddleX, paddleY, 20, 100)
-  love.graphics.circle("fill", circleX, circleY, 10)
+  love.graphics.rectangle("fill", paddle.paddleX, paddle.paddleY, paddle.width, paddle.height)
+  love.graphics.circle("fill", c.circleX, c.circleY, 10)
 end
