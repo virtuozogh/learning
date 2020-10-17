@@ -16,7 +16,7 @@ function love.load()
   } 
 end
 
-function collision(a, b)
+function collision(a, b) --Create universal attributes for collision
   local a_left = a.paddleX
   local a_right = a.paddleX + a.width 
   
@@ -43,8 +43,8 @@ end
 math.randomseed(os.time())
   random = math.random(0 , 9)
   random2 = math.random(10 - random)
-  x_degree = random * 1
-  y_degree = random2 * 1
+  x_degree = random * 2
+  y_degree = random2 * 2
 
 function love.update(dt)
     if love.keyboard.isDown("w") and paddle.paddleY ~= 0 then
@@ -58,26 +58,33 @@ function love.update(dt)
       -- pointing into the hypotenuse
       -- we convert the new hypotenuse into the opposite
       x_degree = -math.sqrt(x_degree^2 + y_degree^2)
+      y_degree = math.tan(x_degree)
       c.circleX = c.circleX + x_degree
       c.circleY = c.circleY + y_degree
     elseif c.circleX < 0 then
       x_degree = math.sqrt(x_degree^2 + y_degree^2)
+      y_degree = -math.tan(x_degree)
       c.circleX = c.circleX + x_degree
       c.circleY = c.circleY + y_degree
     elseif c.circleY < 0 then
       y_degree = math.sqrt(x_degree^2 + y_degree^2)
+      x_degree = -math.tan(y_degree)
       c.circleX = c.circleX + x_degree
       c.circleY = c.circleY + y_degree
     elseif c.circleY >= 590 then
       y_degree = -math.sqrt(x_degree^2 + y_degree^2)
+      x_degree = math.tan(y_degree)
       c.circleX = c.circleX + x_degree
       c.circleY = c.circleY + y_degree
     else 
       c.circleX = c.circleX + x_degree
       c.circleY = c.circleY + y_degree
     end
-    if not collision(paddle, c) then
-      c.circleX = c.circleX + y_degree
+    if collision(paddle, c) then
+      x_degree = math.sqrt(x_degree^2 + y_degree^2)
+      y_degree = -math.tan(x_degree)
+      c.circleX = c.circleX + x_degree
+      c.circleY = c.circleY + y_degree
     end
 end
 
